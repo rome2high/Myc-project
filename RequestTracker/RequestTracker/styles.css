@@ -1,0 +1,16 @@
+table.Level1 {font-size:10pt; font-weight:bold; border:solid 3px #C71585; padding:2px}
+td.Level1Caption {color:#C71585; background-color:#E6E6FA; text-align:center; font-size:17pt}
+td.Level1Header {font-size:8pt; color:#C71585; background-color:#E6E6FA}
+td.Level1Data {font-weight:normal; color:#C71585; background-color:#E6E6FA}
+
+table.Level2 {font-size:10pt;font-weight:bold; border:solid 2px #008080; padding:2px}
+td.Level2Caption {color:#008080; background-color:#F0FFF0; text-align:center; font-size:medium}
+td.Level2Header {font-size:9pt; color:#008080 ; background-color:#F0FFF0}
+td.Level2Data {font-weight:normal; color:#008080; background-color:#F0FFF0}
+
+a:link {color:#4682B4;}
+a:visited {color:#4682B4;}
+a:hover {color:#4682B4;}
+a:active {color:#4682B4;}
+
+.error {font-size: 20pt; font-weight: bold; color: blue;}

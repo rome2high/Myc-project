@@ -38,15 +38,25 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="Level2Header">Entry Date:</td>
-                            <td class="Level2Data" style="font-size:11pt; color:black;">
+                            <td class="Level2Header" style="height: 24px">Entry Date:</td>
+                            <td class="Level2Data" style="font-size:11pt; color:black; height: 24px;">
                                 <asp:Literal ID="LiteralEntryDate" runat="server"></asp:Literal></td>
                         </tr>
                         <tr>
-                            <td class="Level2Header">Quantity:</td>
-                            <td class="Level2Data">
+                            <td class="Level2Header" style="height: 25px">Quantity:</td>
+                            <td class="Level2Data" style="height: 25px">
                                 <asp:DropDownList ID="DropDownListQuantity" runat="server">
                                 </asp:DropDownList></td>
+                        </tr>
+                        <tr>
+                            <td class="Level2Header" style="height: 25px; padding-bottom: 2px;">Request Date:</td>
+                            <td class="Level2Data" style="height: 25px; padding-bottom: 2px;">
+                                <asp:textbox id="TextBoxStartDate3" runat="server" MaxLength="11"></asp:textbox>
+                                <button onmouseover="window.status='Date Picker';return true;" style="border-style: none; border-width: 0px; HEIGHT: 25px; WIDTH: 35px; background-color: #F0FFF0;"
+                                    id="Button5" onclick="ShowCalendar(this,'no')" onmouseout="window.status='';return true;"
+                                    type="button"><img src="/WebTools/Calendar/Calendar.gif" alt="Date Time Picker" 
+                                        border="0" style="width:20px; height:20px ; margin:0 auto" /></button>
+                            </td>
                         </tr>
                         <tr style="vertical-align:top">
                             <td class="Level2Header">Tests:</td>
@@ -143,9 +153,12 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="Level2Header" style="height: 26px">Start Date:</td>
-                            <td class="Level2Data" style="height: 26px">
-                                &nbsp;<asp:textbox id="TextBoxStartDate" runat="server" MaxLength="11"></asp:textbox>
+                            <td class="Level2Header" style="height: 5px" colspan="2">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td class="Level2Header" style="height: 25px">Start Date:</td>
+                            <td class="Level2Data" style="height: 25px">
+                                <asp:textbox id="TextBoxStartDate" runat="server" MaxLength="11"></asp:textbox>
                                 <button onmouseover="window.status='Date Picker';return true;" style="border-style: none; border-width: 0px; HEIGHT: 25px; WIDTH: 35px; background-color: #F0FFF0;"
                                     id="Button1" onclick="ShowCalendar(this,'no')" onmouseout="window.status='';return true;"
                                     type="button"><img src="/WebTools/Calendar/Calendar.gif" alt="Date Time Picker" 
@@ -153,9 +166,19 @@
                             </td>
                         </tr>
                         <tr>
+                            <td class="Level2Header" style="height: 25px">Promise Date:</td>
+                            <td class="Level2Data" style="height: 25px">
+                                <asp:textbox id="TextBoxStartDate4" runat="server" MaxLength="11"></asp:textbox>
+                                <button onmouseover="window.status='Date Picker';return true;" style="border-style: none; border-width: 0px; HEIGHT: 25px; WIDTH: 35px; background-color: #F0FFF0;"
+                                    id="Button6" onclick="ShowCalendar(this,'no')" onmouseout="window.status='';return true;"
+                                    type="button"><img src="/WebTools/Calendar/Calendar.gif" alt="Date Time Picker" 
+                                        border="0" style="width:20px; height:20px ; margin:0 auto" /></button>
+                            </td>
+                        </tr>
+                        <tr>
                             <td class="Level2Header" style="height: 25px">Completion Date:</td>
                             <td class="Level2Data" style="height: 25px">
-                                &nbsp;<asp:textbox id="TextBoxDate" runat="server" MaxLength="11"></asp:textbox>
+                                <asp:textbox id="TextBoxDate" runat="server" MaxLength="11"></asp:textbox>
                                 <button onmouseover="window.status='Date Picker';return true;" style="border-style: inset; border-width: 0px; HEIGHT: 25px; WIDTH: 35px; background-color: #F0FFF0;"
                                     id="dtpk1" onclick="ShowCalendar(this,'no')" onmouseout="window.status='';return true;"
                                     type="button"><img src="/WebTools/Calendar/Calendar.gif" alt="Date Time Picker" 

@@ -67,13 +67,31 @@ namespace RequestTracker {
         protected global::System.Web.UI.WebControls.DropDownList DropDownListQuantity;
         
         /// <summary>
-        /// TextBoxStartDate3 control.
+        /// TextBoxRequestDate control.
         /// </summary>
         /// <remarks>
         /// Auto-generated field.
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBoxStartDate3;
+        protected global::System.Web.UI.WebControls.TextBox TextBoxRequestDate;
+        
+        /// <summary>
+        /// TextBoxReceiveDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TextBoxReceiveDate;
+        
+        /// <summary>
+        /// TextBoxPromiseDate control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.TextBox TextBoxPromiseDate;
         
         /// <summary>
         /// DataGridTests control.
@@ -121,6 +139,24 @@ namespace RequestTracker {
         protected global::System.Web.UI.WebControls.TextBox TextBoxNotes;
         
         /// <summary>
+        /// DataGridHangUps control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.DataGrid DataGridHangUps;
+        
+        /// <summary>
+        /// ButtonAddHangUps control.
+        /// </summary>
+        /// <remarks>
+        /// Auto-generated field.
+        /// To modify move field declaration from designer file to code-behind file.
+        /// </remarks>
+        protected global::System.Web.UI.WebControls.Button ButtonAddHangUps;
+        
+        /// <summary>
         /// TextBoxStartDate control.
         /// </summary>
         /// <remarks>
@@ -128,15 +164,6 @@ namespace RequestTracker {
         /// To modify move field declaration from designer file to code-behind file.
         /// </remarks>
         protected global::System.Web.UI.WebControls.TextBox TextBoxStartDate;
-        
-        /// <summary>
-        /// TextBoxStartDate4 control.
-        /// </summary>
-        /// <remarks>
-        /// Auto-generated field.
-        /// To modify move field declaration from designer file to code-behind file.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox TextBoxStartDate4;
         
         /// <summary>
         /// TextBoxDate control.

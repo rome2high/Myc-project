@@ -11,6 +11,15 @@
     <script type="text/javascript" src="/WebTools/ModelNumberLookup/ObjectPositioning.js"></script>
     <!-- Javascript needed for Calendar.aspx: -->
     <script type="text/javascript" src="/WebTools/Calendar/Calendar.js"></script>    
+<script language="javascript" type="text/javascript">
+// <![CDATA[
+
+function btnPromiseDate_onclick() {
+
+}
+
+// ]]>
+</script>
 </head>
 <body onclick="">
     <form id="form1" runat="server">
@@ -26,41 +35,63 @@
                     <table cellpadding="0" cellspacing="0" border="0" class="Level2" style="width:100%">
                         <tr>
                             <td class="Level2Header">Request Number:</td>
-                            <td class="Level2Data" style="font-weight:bold; font-size:11pt; color:black;">
+                            <td class="Level2Data" style="font-weight:bold; font-size:11pt; color:black;" 
+                                colspan="3">
                                 <asp:Literal ID="LiteralJobNumber" runat="server"></asp:Literal>
                             </td>
                         </tr>
                         <tr>
                             <td class="Level2Header">Requestor:</td>
-                            <td class="Level2Data">
+                            <td class="Level2Data" colspan="3">
                                 <asp:TextBox ID="TextBoxEmployee" runat="server" Width="250px"></asp:TextBox>
                                  <span style="font-size:8pt; font-weight:normal">(last name, first name)</span>
                             </td>
                         </tr>
                         <tr>
                             <td class="Level2Header" style="height: 24px">Entry Date:</td>
-                            <td class="Level2Data" style="font-size:11pt; color:black; height: 24px;">
+                            <td class="Level2Data" style="font-size:11pt; color:black; height: 24px;" 
+                                colspan="3">
                                 <asp:Literal ID="LiteralEntryDate" runat="server"></asp:Literal></td>
                         </tr>
                         <tr>
                             <td class="Level2Header" style="height: 25px">Quantity:</td>
-                            <td class="Level2Data" style="height: 25px">
+                            <td class="Level2Data" style="height: 25px" colspan="3">
                                 <asp:DropDownList ID="DropDownListQuantity" runat="server">
                                 </asp:DropDownList></td>
                         </tr>
                         <tr>
                             <td class="Level2Header" style="height: 25px; padding-bottom: 2px;">Request Date:</td>
                             <td class="Level2Data" style="height: 25px; padding-bottom: 2px;">
-                                <asp:textbox id="TextBoxStartDate3" runat="server" MaxLength="11"></asp:textbox>
+                                <asp:textbox id="TextBoxRequestDate" runat="server" MaxLength="11"></asp:textbox>
                                 <button onmouseover="window.status='Date Picker';return true;" style="border-style: none; border-width: 0px; HEIGHT: 25px; WIDTH: 35px; background-color: #F0FFF0;"
                                     id="Button5" onclick="ShowCalendar(this,'no')" onmouseout="window.status='';return true;"
                                     type="button"><img src="/WebTools/Calendar/Calendar.gif" alt="Date Time Picker" 
                                         border="0" style="width:20px; height:20px ; margin:0 auto" /></button>
                             </td>
+                            <td class="Level2Data" style="height: 25px; padding-bottom: 2px;">
+                                <strong>Unit Receive Date:</strong>
+                                <asp:textbox id="TextBoxReceiveDate" runat="server" MaxLength="11"></asp:textbox>
+                                <button onmouseover="window.status='Date Picker';return true;" style="border-style: none; border-width: 0px; HEIGHT: 25px; WIDTH: 35px; background-color: #F0FFF0; margin-bottom: 0px;"
+                                    id="btnPromiseDate0" onclick="ShowCalendar(this,'no')" onmouseout="window.status='';return true;"
+                                    type="button" name="btnPromiseDate0" 
+                                    onclick="return btnPromiseDate_onclick()">
+                                    <img src="/WebTools/Calendar/Calendar.gif" alt="Date Time Picker" 
+                                        border="0" style="width:20px; height:20px ; margin:0 auto" 
+                                        id="imgPromiseDate0" name="imgPromiseDate0" /></button>
+                            </td>
+                            <td class="Level2Data" style="height: 25px; padding-bottom: 2px;">
+                                <strong>Promise Date:</strong>
+                                <asp:textbox id="TextBoxPromiseDate" runat="server" MaxLength="11"></asp:textbox>
+                                <button onmouseover="window.status='Date Picker';return true;" style="border-style: none; border-width: 0px; HEIGHT: 25px; WIDTH: 35px; background-color: #F0FFF0; margin-bottom: 0px;"
+                                    id="btnPromiseDate" onclick="ShowCalendar(this,'no')" onmouseout="window.status='';return true;"
+                                    type="button" name="btnPromiseDate" onclick="return btnPromiseDate_onclick()"><img src="/WebTools/Calendar/Calendar.gif" alt="Date Time Picker" 
+                                        border="0" style="width:20px; height:20px ; margin:0 auto" 
+                                        id="imgPromiseDate" name="imgPromiseDate" /></button>
+                            </td>
                         </tr>
                         <tr style="vertical-align:top">
                             <td class="Level2Header">Tests:</td>
-                            <td class="Level2Data">
+                            <td class="Level2Data" colspan="3">
                                 <asp:datagrid id="DataGridTests" runat="server" Width="100%" Font-Names="Verdana" CellPadding="1"
                                     BackColor="#DDDDFF" AutoGenerateColumns="False" Font-Size="8pt" OnCancelCommand="DataGridTests_CancelCommand" OnDeleteCommand="DataGridTests_DeleteCommand" OnEditCommand="DataGridTests_EditCommand" OnItemCommand="DataGridTests_ItemCommand" OnUpdateCommand="DataGridTests_UpdateCommand">
                                     <FooterStyle Font-Size="8pt"></FooterStyle>
@@ -123,7 +154,7 @@
                         </tr>
                         <tr>
                             <td class="Level2Data"></td>
-                            <td style="height:30px;vertical-align:middle" class="Level2Data">
+                            <td style="height:30px;vertical-align:middle" class="Level2Data" colspan="3">
                                 <table cellpadding="0" cellspacing="0" border="0" style="width:100%">
                                     <tr>
                                         <td style="width:26%">
@@ -141,23 +172,108 @@
                         </tr>
                         <tr>
                             <td class="Level2Header">Technician:</td>
-                            <td class="Level2Data">
+                            <td class="Level2Data" colspan="3">
                                 <asp:TextBox ID="TextBoxTechnician" runat="server" Width="250px"></asp:TextBox>
                                  <span style="font-size:8pt; font-weight:normal">(last name, first name)</span>
                             </td>
                         </tr>
                         <tr style="vertical-align:top">
                             <td class="Level2Header">Notes:</td>
-                            <td class="Level2Data"><asp:TextBox ID="TextBoxNotes" runat="server" Columns="50" 
+                            <td class="Level2Data" colspan="3"><asp:TextBox ID="TextBoxNotes" runat="server" Columns="50" 
                                     Rows="8" TextMode="MultiLine" Height="137px" Width="561px"></asp:TextBox>
                             </td>
                         </tr>
                         <tr>
-                            <td class="Level2Header" style="height: 5px" colspan="2">&nbsp;</td>
+                            <td class="Level2Header" style="height: 5px" colspan="4">&nbsp;</td>
+                        </tr>
+                        <tr>
+                            <td class="Level2Header" style="height: 25px">Hang-Ups:</td>
+                            <td class="Level2Data" style="height: 25px" colspan="3">
+                                <asp:datagrid id="DataGridHangUps" runat="server" Width="100%" 
+                                    Font-Names="Verdana" CellPadding="1"
+                                    BackColor="#DDDDFF" AutoGenerateColumns="False" Font-Size="8pt" 
+                                    OnCancelCommand="DataGridTests_CancelCommand" 
+                                    OnDeleteCommand="DataGridTests_DeleteCommand" 
+                                    OnEditCommand="DataGridTests_EditCommand" 
+                                    OnItemCommand="DataGridTests_ItemCommand" 
+                                    OnUpdateCommand="DataGridTests_UpdateCommand">
+                                    <FooterStyle Font-Size="8pt"></FooterStyle>
+                                    <SelectedItemStyle Font-Size="8pt" HorizontalAlign="Center" ForeColor="Black" BackColor="PowderBlue"></SelectedItemStyle>
+                                    <EditItemStyle Font-Size="8pt"></EditItemStyle>
+                                    <AlternatingItemStyle Font-Size="8pt" HorizontalAlign="Left" ForeColor="Black" BackColor="White"></AlternatingItemStyle>
+                                    <ItemStyle Font-Size="8pt" HorizontalAlign="Left" ForeColor="Black" BackColor="Gainsboro"></ItemStyle>
+                                    <HeaderStyle Font-Size="8pt" Font-Bold="True" HorizontalAlign="Left" ForeColor="White" BackColor="#6B78A2"></HeaderStyle>
+                                    <Columns>
+                                        <asp:TemplateColumn>
+                                            <ItemTemplate>
+                                                <asp:LinkButton id="RemoveTest0" CommandName="Delete" Text="Remove" 
+                                                    Runat="server"></asp:LinkButton>
+                                            </ItemTemplate>
+                                            <FooterStyle Wrap="False"></FooterStyle>
+                                            <FooterTemplate>
+                                                <asp:LinkButton Runat="server" CommandName="Add" Text="Ok" ID="EditTestRun0"></asp:LinkButton>
+                                                <asp:LinkButton Runat="server" CommandName="Cancel" Text="Cancel" 
+                                                    ID="CancelEdit0"></asp:LinkButton>
+                                            </FooterTemplate>
+                                        </asp:TemplateColumn>
+                                        <asp:EditCommandColumn ButtonType="LinkButton" UpdateText="Ok" HeaderText="Edit" CancelText="Cancel" EditText="Edit">
+                                        </asp:EditCommandColumn>
+                                        <asp:TemplateColumn HeaderText="Hang-Up Reason">
+                                            <ItemTemplate>
+                                                <%# DataBinder.Eval(Container, "DataItem.HangUpName") %>
+                                            </ItemTemplate>
+                                            <FooterTemplate>
+                                                <asp:DropDownList Font-Size="8pt" id="AddHangUp" runat="server" 
+                                                    DataSource='<%# GetHangUps() %>' DataTextField="HangUpName" DataValueField="HangUpID">
+                                                </asp:DropDownList>
+                                            </FooterTemplate>
+                                        </asp:TemplateColumn>
+                                        <asp:TemplateColumn HeaderText="Hang-Up Date">
+                                            <ItemTemplate>
+                                                <%# DataBinder.Eval(Container.DataItem, "HangUpDate").ToString()%>
+                                            </ItemTemplate>
+                                            <FooterTemplate>
+                                                <asp:DropDownList Font-Size="8pt" id="AddRunOrder0" runat="server" 
+                                                    DataSource='<%# GetRunOrders() %>' DataTextField="RunOrderValue" 
+                                                    DataValueField="RunOrderID">
+                                                </asp:DropDownList>
+                                            </FooterTemplate>
+                                            <EditItemTemplate>
+                                                <asp:DropDownList Font-Size="8pt" id="EditRunOrder0" runat="server" 
+                                                    DataSource='<%# GetRunOrders() %>' 
+                                                    SelectedIndex='<%# GetRunOrderIndex(DataBinder.Eval(Container.DataItem, "RunOrder").ToString()) %>' 
+                                                    DataTextField="RunOrderValue" DataValueField="RunOrderID">
+                                                </asp:DropDownList>
+                                            </EditItemTemplate>
+                                        </asp:TemplateColumn>
+                                        <asp:TemplateColumn HeaderText="Resolve Date">
+                                            <ItemTemplate>
+                                                <%#DataBinder.Eval(Container.DataItem, "ResolveDate").ToString()%>
+                                            </ItemTemplate>
+                                            <FooterTemplate>
+                                                <asp:DropDownList Font-Size="8pt" id="AddRestart0" runat="server" DataSource='<%# GetRestarts() %>' DataTextField="RestartValue" DataValueField="RestartID">
+                                                </asp:DropDownList>
+                                            </FooterTemplate>
+                                            <EditItemTemplate>
+                                                <asp:DropDownList Font-Size="8pt" id="EditRestart0" runat="server" DataSource='<%# GetRestarts() %>' SelectedIndex='<%# GetRestartIndex(DataBinder.Eval(Container.DataItem, "Restarts").ToString()) %>' 
+                                                    DataTextField="RestartValue" DataValueField="RestartID">
+                                                </asp:DropDownList>
+                                            </EditItemTemplate>
+                                        </asp:TemplateColumn>
+                                    </Columns>
+                                </asp:datagrid>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td class="Level2Header" style="height: 25px">&nbsp;</td>
+                            <td class="Level2Data" style="height: 25px" colspan="3">
+                                            <asp:button id="ButtonAddHangUps" runat="server" Text="Add Hang-Ups" 
+                                                OnClick="ButtonAddHangUps_Click" Width="119px"></asp:button>
+                            </td>
                         </tr>
                         <tr>
                             <td class="Level2Header" style="height: 25px">Start Date:</td>
-                            <td class="Level2Data" style="height: 25px">
+                            <td class="Level2Data" style="height: 25px" colspan="3">
                                 <asp:textbox id="TextBoxStartDate" runat="server" MaxLength="11"></asp:textbox>
                                 <button onmouseover="window.status='Date Picker';return true;" style="border-style: none; border-width: 0px; HEIGHT: 25px; WIDTH: 35px; background-color: #F0FFF0;"
                                     id="Button1" onclick="ShowCalendar(this,'no')" onmouseout="window.status='';return true;"
@@ -166,18 +282,8 @@
                             </td>
                         </tr>
                         <tr>
-                            <td class="Level2Header" style="height: 25px">Promise Date:</td>
-                            <td class="Level2Data" style="height: 25px">
-                                <asp:textbox id="TextBoxStartDate4" runat="server" MaxLength="11"></asp:textbox>
-                                <button onmouseover="window.status='Date Picker';return true;" style="border-style: none; border-width: 0px; HEIGHT: 25px; WIDTH: 35px; background-color: #F0FFF0;"
-                                    id="Button6" onclick="ShowCalendar(this,'no')" onmouseout="window.status='';return true;"
-                                    type="button"><img src="/WebTools/Calendar/Calendar.gif" alt="Date Time Picker" 
-                                        border="0" style="width:20px; height:20px ; margin:0 auto" /></button>
-                            </td>
-                        </tr>
-                        <tr>
                             <td class="Level2Header" style="height: 25px">Completion Date:</td>
-                            <td class="Level2Data" style="height: 25px">
+                            <td class="Level2Data" style="height: 25px" colspan="3">
                                 <asp:textbox id="TextBoxDate" runat="server" MaxLength="11"></asp:textbox>
                                 <button onmouseover="window.status='Date Picker';return true;" style="border-style: inset; border-width: 0px; HEIGHT: 25px; WIDTH: 35px; background-color: #F0FFF0;"
                                     id="dtpk1" onclick="ShowCalendar(this,'no')" onmouseout="window.status='';return true;"
@@ -188,16 +294,17 @@
                         <tr>
                             <td class="Level2Header" style="padding: 2px">
                                 Form:</td>
-                            <td class="Level2Data" style="padding: 3px">
+                            <td class="Level2Data" style="padding: 3px" colspan="3">
                                 <asp:FileUpload ID="FileUploadForm" runat="server" />
                                 <span style="font-size:8pt; font-weight:normal">(.pdf format only)</span>
                                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <asp:hyperlink id="PdfHyperLink" runat="server" Target="_blank" Font-Size="12pt" Font-Bold="true">Get Form</asp:hyperlink>
                             </td>
                         </tr>
-                        <tr><td colspan="2" class="Level2Data">&nbsp;</td></tr>
+                        <tr><td colspan="4" class="Level2Data">&nbsp;</td></tr>
                         <tr>
-                            <td colspan="2" style="text-align:center;vertical-align:middle;height:40px" class="Level2Data">
+                            <td colspan="4" style="text-align:center;vertical-align:middle;height:40px" 
+                                class="Level2Data">
                                 <asp:Button ID="ButtonSave" runat="server" Text="Save" Width="60px" OnClick="ButtonSave_Click" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <asp:Button ID="ButtonDelete" runat="server" Text="Delete" Width="60px" OnClick="ButtonDelete_Click" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                                 <asp:Button ID="ButtonBack" runat="server" Text="Back" Width="60px" OnClick="ButtonBack_Click" />&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;

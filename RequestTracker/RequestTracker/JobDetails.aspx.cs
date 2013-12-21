@@ -26,6 +26,9 @@ namespace RequestTracker
         private short technicianID;
         private string jobID;
 
+        private ArrayList jobHangUps;
+        private ArrayList hangUps;
+
         protected void Page_Load(object sender, EventArgs e)
         {
             if (!this.IsPostBack)
@@ -76,6 +79,7 @@ namespace RequestTracker
                 jobID = this.ViewState["JobID"].ToString();
                 this.LabelFormStatus.Text = "";
                 testRequests = UnpackageTestRequests(this.ViewState["TestRequests"].ToString());
+                hangUps = UnpackageJobHangUps(this.ViewState["JobHangUps"].ToString());
             }
         }
 
@@ -85,6 +89,9 @@ namespace RequestTracker
             SqlCommand sqlCommand;
             SqlDataReader sqlDataReader;
             DateTime startDate;
+            DateTime requestDate;
+            DateTime promiseDate;
+            DateTime receiveDate;
             DateTime completionDate;
 
             if (jobID != "0")
@@ -94,7 +101,7 @@ namespace RequestTracker
                 BuildFormLink(jobID);   //build pdf link
 
                 sql = "SELECT r.LastName + ', ' + r.FirstName + ' [' + r.Location + ']',j.Notes,j.Quantity," +
-                             "j.StartDate,"+
+                             "j.StartDate,j.RequestDate,j.PromiseDate,j.ReceiveDate," +
                              "j.CompletionDate,j.EntryDate,t.LastName + ', ' + t.FirstName + ' [' + t.Location + ']' " +
                       "FROM   Job j " +
                              "JOIN Employee r ON j.RequestorID=r.EmployeeID " +
@@ -117,15 +124,35 @@ namespace RequestTracker
                         startDate = sqlDataReader.GetDateTime(3);
                         this.TextBoxStartDate.Text = ReformatDate(sqlDataReader.GetDateTime(3));
                     }
-
-                    if (!sqlDataReader.IsDBNull(4))
-                    {
-                        completionDate = sqlDataReader.GetDateTime(4);
-                        this.TextBoxDate.Text = ReformatDate(sqlDataReader.GetDateTime(4));
+                    
+                    if(!sqlDataReader.IsDBNull(4)){
+                        requestDate = sqlDataReader.GetDateTime(4);
+                        this.TextBoxRequestDate.Text = ReformatDate(sqlDataReader.GetDateTime(4));
                     }
 
-                    this.LiteralEntryDate.Text = ReformatDate(sqlDataReader.GetDateTime(5));
-                    this.TextBoxTechnician.Text = sqlDataReader.GetString(6);
+                    if (!sqlDataReader.IsDBNull(5))
+                    {
+                        promiseDate = sqlDataReader.GetDateTime(5);
+                        this.TextBoxPromiseDate.Text = ReformatDate(sqlDataReader.GetDateTime(5));
+                        this.TextBoxPromiseDate.Enabled = false;
+                            //need to disable calendar and button
+                    }
+
+                    if (!sqlDataReader.IsDBNull(6))
+                    {
+                        receiveDate = sqlDataReader.GetDateTime(6);
+                        this.TextBoxReceiveDate.Text = ReformatDate(sqlDataReader.GetDateTime(6));
+                    }
+
+                    if (!sqlDataReader.IsDBNull(7))
+                    {
+                        completionDate = sqlDataReader.GetDateTime(7);
+                        this.TextBoxDate.Text = ReformatDate(sqlDataReader.GetDateTime(7));
+                    }
+
+                    this.LiteralEntryDate.Text = ReformatDate(sqlDataReader.GetDateTime(8));
+                    this.TextBoxTechnician.Text = sqlDataReader.GetString(9);
+
                 }
 
                 sqlDataReader.Close();
@@ -134,6 +161,7 @@ namespace RequestTracker
                 sqlCommand.Dispose();
 
                 testRequests = GetTestRequests(jobID);
+                jobHangUps = GetJobHangUps(jobID);
 
                 this.ButtonBack.Visible = true;
                 this.ButtonDelete.Visible = true;
@@ -148,6 +176,8 @@ namespace RequestTracker
             }
 
             BindData(testRequests);
+            BindDataHangUp(jobHangUps);
+            
         }
 
         private void BuildFormLink(string jobID)
@@ -178,6 +208,39 @@ namespace RequestTracker
         protected void Page_PreRender(object sender, EventArgs e)
         {
             this.ViewState["TestRequests"] = PackageTestRequests(testRequests);
+            this.ViewState["JobHangUps"] = PackageJobHangUps(jobHangUps);
+
+            foreach (DictionaryEntry s in this.ViewState)
+            {
+                string srt = s.Key.ToString();
+            }
+        }
+
+        private ArrayList UnpackageJobHangUps(string joinedJobHangUps)
+        {
+            char[] objectSeparator = { objectDelimiter };
+            char[] fieldSeparator = { fieldDelimiter };
+            string[] fields;
+            FlattenedJobHangUps jh;
+
+            jobHangUps = new ArrayList();
+
+            if (joinedJobHangUps != "")
+            {
+                foreach (string request in joinedJobHangUps.Split(objectSeparator))
+                {
+                    fields = request.Split(fieldSeparator);
+                    jh = new FlattenedJobHangUps();
+                    jh.JobHangUpID = Convert.ToInt16(fields[0]);
+                    jh.HangUpID = Convert.ToInt16(fields[1]);
+                    jh.HangUpName = fields[2];
+                    jh.Status = (FlattenedJobHangUps.TestHangUpStatus)Convert.ToInt16(fields[3]);
+
+                    testRequests.Add(jh);
+                }
+            }
+
+            return testRequests;
         }
 
         private ArrayList UnpackageTestRequests(string joinedTestRequests)
@@ -201,12 +264,45 @@ namespace RequestTracker
                     tr.Restarts = Convert.ToInt16(fields[3]);
                     tr.RunOrder = Convert.ToInt16(fields[4]);
                     tr.Status = (FlattenedTestRequest.TestRequestStatus)Convert.ToInt16(fields[5]);
-
+                    
                     testRequests.Add(tr);
                 }
             }
 
             return testRequests;
+        }
+
+        private string PackageJobHangUps(ArrayList jobHangUps)
+        {
+            if (jobHangUps.Count > 0)
+            {
+                StringBuilder joinedJobHangUps = new StringBuilder();
+
+                foreach (FlattenedJobHangUps jh in jobHangUps)
+                {
+                    joinedJobHangUps.Append(jh.JobHangUpID.ToString());
+                    joinedJobHangUps.Append(fieldDelimiter);
+                    joinedJobHangUps.Append(jh.HangUpID.ToString());
+                    joinedJobHangUps.Append(fieldDelimiter);
+                    joinedJobHangUps.Append(jh.HangUpName);
+                    joinedJobHangUps.Append(fieldDelimiter);
+                    joinedJobHangUps.Append(jh.HangUpDate.ToShortDateString());
+                    joinedJobHangUps.Append(fieldDelimiter);
+                    joinedJobHangUps.Append(jh.ResolveDate.ToShortDateString());
+                    joinedJobHangUps.Append(fieldDelimiter);
+                    joinedJobHangUps.Append(Convert.ToInt16(jh.Status).ToString());
+
+                    joinedJobHangUps.Append(objectDelimiter);
+                }
+
+                joinedJobHangUps.Remove(joinedJobHangUps.Length - 1, 1);
+
+                return joinedJobHangUps.ToString();
+            }
+            else
+            {
+                return "";
+            }
         }
 
         private string PackageTestRequests(ArrayList testRequests)
@@ -244,6 +340,37 @@ namespace RequestTracker
 
         }
 
+        private ArrayList GetJobHangUps(string jobID)
+        {
+            string sql;
+            SqlCommand sqlCommand;
+            SqlDataReader sqlDataReader;
+
+            sql = "SELECT   jh.JobHangUpID, jh.JobID, jh.HangUpID, h.HangUpName, jh.HangUpDate, jh.ResolveDate " +
+                  "FROM     JobHangUp jh " +
+                           "JOIN HangUp h ON jh.HangUpID=h.HangUpID " +
+                  "WHERE    JobID=" + jobID +
+                 " ORDER BY jh.HangUpDate";
+
+            sqlCommand = new SqlCommand(sql, GetConnection());
+            sqlCommand.CommandType = CommandType.Text;
+            sqlDataReader = sqlCommand.ExecuteReader();
+
+            jobHangUps = new ArrayList();
+
+            while (sqlDataReader.Read())
+            {
+                jobHangUps.Add(new FlattenedJobHangUps(sqlDataReader.GetInt16(0), sqlDataReader.GetInt16(1), sqlDataReader.GetInt16(2), sqlDataReader.GetString(3), sqlDataReader.GetDateTime(4), sqlDataReader.GetDateTime(5), FlattenedJobHangUps.TestHangUpStatus.Unchanged));
+            }
+
+            sqlDataReader.Close();
+            sqlDataReader.Dispose();
+            sqlCommand.Connection.Close();
+            sqlCommand.Dispose();
+
+            return jobHangUps;
+        }
+
         private ArrayList GetTestRequests(string jobID)
         {
             string sql;
@@ -273,6 +400,33 @@ namespace RequestTracker
             sqlCommand.Dispose();
 
             return testRequests;
+        }
+
+        //binddata for hang ups
+        private void BindDataHangUp(ArrayList jobHangUps)
+        {
+            ArrayList nonDeletedHUs = new ArrayList();
+
+            foreach (FlattenedJobHangUps jh in jobHangUps)
+            {
+                if (jh.Status != FlattenedJobHangUps.TestHangUpStatus.Deleted)
+                {
+                    nonDeletedHUs.Add(jh);
+                }
+            }
+
+            DataGridHangUps.DataKeyField = "JobHangUpID";
+            DataGridHangUps.DataSource = nonDeletedHUs;
+            DataGridHangUps.DataBind();
+
+            if (nonDeletedHUs.Count > 0)
+            {
+                this.LiteralRequestInstructions.Visible = true;
+            }
+            else
+            {
+                this.LiteralRequestInstructions.Visible = false;
+            }
         }
 
         private void BindData(ArrayList testRequests)
@@ -342,6 +496,36 @@ namespace RequestTracker
             sqlCommand.Dispose();
 
             return tests;
+        }
+
+        public ArrayList GetHangUps()
+        {
+            string sql = "";
+            SqlCommand sqlCommand;
+            SqlDataReader sqlDataReader;
+
+            sql = "SELECT   h.HangUpID, h.HangUpName " +
+                  "FROM     HangUp h " +
+                  "ORDER BY h.HangUpID";
+
+            sqlCommand = new SqlCommand(sql, GetConnection());
+            sqlCommand.CommandType = CommandType.Text;
+            sqlDataReader = sqlCommand.ExecuteReader();
+
+            hangUps = new ArrayList();
+
+            while (sqlDataReader.Read())
+            {
+                hangUps.Add(new FlattenedHangUp(sqlDataReader.GetInt16(0), sqlDataReader.GetString(1)));
+            }
+
+            sqlDataReader.Close();
+            sqlDataReader.Dispose();
+            sqlCommand.Connection.Close();
+            sqlCommand.Dispose();
+
+            return hangUps;
+
         }
 
         public ArrayList GetRunOrders()
@@ -559,6 +743,125 @@ namespace RequestTracker
             this.ButtonAddTest.Enabled = true;
         }
 
+        private class FlattenedJobHangUps
+        {
+            private short _JobHangUpID;
+            private short _JobID;
+            private short _HangUpID;
+            private string _HangUpName;
+            private DateTime _HangUpDate;
+            private DateTime _ResolveDate;
+
+            private TestHangUpStatus _Status;
+
+            public enum TestHangUpStatus
+            {
+                Deleted,
+                New,
+                Unchanged,
+                Updated,
+            }
+
+            public short JobHangUpID
+            {
+                get
+                {
+                    return _JobHangUpID;
+                }
+                set
+                {
+                    this._JobHangUpID = value;
+                }
+            }
+
+            public short JobID
+            {
+                get
+                {
+                    return _JobID;
+                }
+                set
+                {
+                    this._JobID = value;
+                }
+            }
+
+            public short HangUpID
+            {
+                get
+                {
+                    return _HangUpID;
+                }
+                set
+                {
+                    this._HangUpID = value;
+                }
+            }
+
+            public string HangUpName
+            {
+                get
+                {
+                    return _HangUpName;
+                }
+                set{
+                    this._HangUpName = value;
+                }
+            }
+
+            public DateTime HangUpDate
+            {
+                get
+                {
+                    return _HangUpDate;
+                }
+                set
+                {
+                    this._HangUpDate = value;
+                }
+            }
+
+            public DateTime ResolveDate
+            {
+                get
+                {
+                    return _ResolveDate;
+                }
+                set
+                {
+                    this.ResolveDate = value;
+                }
+            }
+
+            public TestHangUpStatus Status
+            {
+                get
+                {
+                    return _Status;
+                }
+                set
+                {
+                    this._Status = value;
+                }
+            }
+
+            public FlattenedJobHangUps()
+            {
+
+            }
+
+            public FlattenedJobHangUps(short jobHangUpID, short jobID, short hangUpID, string hangUpName, DateTime hangUpDate, DateTime resolveDate, TestHangUpStatus status)
+            {
+                this._JobHangUpID = jobHangUpID;
+                this._JobID = jobID;
+                this._HangUpID = hangUpID;
+                this._HangUpName = hangUpName;
+                this._HangUpDate = hangUpDate;
+                this._ResolveDate = resolveDate;
+                this._Status = status;
+            }
+        }
+
         private class FlattenedTestRequest
         {
             private short _TestRequestID;
@@ -733,6 +1036,42 @@ namespace RequestTracker
             }
         }
 
+        private class FlattenedHangUp
+        {
+            private short _HangUpID;
+            private string _HangUpName;
+
+            public short HangUpID
+            {
+                get
+                {
+                    return _HangUpID;
+                }
+                set
+                {
+                    this._HangUpID = value;
+                }
+            }
+
+            public string HangUpName
+            {
+                get
+                {
+                    return _HangUpName;
+                }
+                set
+                {
+                    this._HangUpName = value;
+                }
+            }
+
+            public FlattenedHangUp(short hangUpID, string hangUpName)
+            {
+                this._HangUpID = hangUpID;
+                this._HangUpName = hangUpName;
+            }
+        }
+
         public class RunOrder
         {
             private short _RunOrderID;
@@ -794,6 +1133,14 @@ namespace RequestTracker
             DataGridTests.EditItemIndex = -1;
             BindData(testRequests);
             DataGridTests.ShowFooter = true;
+            this.ButtonAddTest.Enabled = false;
+        }
+
+        protected void ButtonAddHangUps_Click(object sender, EventArgs e)
+        {
+            DataGridHangUps.EditItemIndex = -1;
+            BindDataHangUp(jobHangUps);
+            DataGridHangUps.ShowFooter = true;
             this.ButtonAddTest.Enabled = false;
         }
 
@@ -1076,6 +1423,42 @@ namespace RequestTracker
                     {
                         sql.Append("'");
                         sql.Append(ReformatDate(this.TextBoxStartDate.Text));
+                        sql.Append("'");
+                    }
+
+                    sql.Append(",RequestDate=");
+                    if (this.TextBoxRequestDate.Text == "")
+                    {
+                        sql.Append("NULL");
+                    }
+                    else
+                    {
+                        sql.Append("'");
+                        sql.Append(ReformatDate(this.TextBoxRequestDate.Text));
+                        sql.Append("'");
+                    }
+
+                    sql.Append(",ReceiveDate=");
+                    if (this.TextBoxReceiveDate.Text == "")
+                    {
+                        sql.Append("NULL");
+                    }
+                    else
+                    {
+                        sql.Append("'");
+                        sql.Append(ReformatDate(this.TextBoxReceiveDate.Text));
+                        sql.Append("'");
+                    }
+
+                    sql.Append(",PromiseDate=");
+                    if (this.TextBoxPromiseDate.Text == "")
+                    {
+                        sql.Append("NULL");
+                    }
+                    else
+                    {
+                        sql.Append("'");
+                        sql.Append(ReformatDate(this.TextBoxPromiseDate.Text));
                         sql.Append("'");
                     }
 
